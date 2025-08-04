@@ -9,7 +9,7 @@ pip install -r requirements.txt
 ```
 
 ## 🔧 Activate Virtual Environment
-## 💻 On macOS / Linux:
+ 💻 On macOS / Linux:
 ```bash
 source venv/bin/activate
 ```
