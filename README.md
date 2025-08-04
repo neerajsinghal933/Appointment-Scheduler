@@ -1,17 +1,17 @@
 ## 🚀 Getting Started
 
+## 🔧 Activate Virtual Environment
+ 💻 On macOS / Linux:
+```bash
+source venv/bin/activate
+```
+
 ### 🛠️ Install Dependencies
 
 Make sure you have Python 3 and `virtualenv` installed.
 
 ```bash
 pip install -r requirements.txt
-```
-
-## 🔧 Activate Virtual Environment
- 💻 On macOS / Linux:
-```bash
-source venv/bin/activate
 ```
 
 ## ▶️ Run the Flask App
