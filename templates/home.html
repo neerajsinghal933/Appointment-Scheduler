@@ -1,52 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Google Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+<head>
+    <meta charset="UTF-8">
+    <title>Speech to Text</title>
     <style>
-      body {
-        background: #f8f9fa;
-        font-family: "Segoe UI", sans-serif;
-      }
-      .card {
-        border: none;
-        border-radius: 16px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-      .avatar {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 50%;
-        margin-bottom: 20px;
-      }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            text-align: center;
+        }
+        #text {
+            margin-top: 30px;
+            font-size: 20px;
+            border: 1px solid #ccc;
+            padding: 20px;
+            min-height: 100px;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
     </style>
-  </head>
-  <body>
-    <div
-      class="container d-flex justify-content-center align-items-center"
-      style="min-height: 100vh"
-    >
-      <div class="card p-5 text-center" style="width: 100%; max-width: 400px">
-        {% if user %}
-        <img src="{{ user.picture }}" class="avatar" alt="User Picture" />
-        <h4 class="mb-0">{{ user.name }}</h4>
-        <small class="text-muted">{{ user.email }}</small>
-        <hr />
-        <a href="/logout" class="btn btn-outline-danger w-100 mt-2">Log Out</a>
-        {% else %}
-        <h3 class="mb-4">Welcome</h3>
-        <p class="text-muted">Sign in with your Google account to continue.</p>
-        <a href="/login" class="btn btn-outline-primary w-100"
-          >Login with Google</a
-        >
-        {% endif %}
-      </div>
-    </div>
-  </body>
+</head>
+<body>
+    {% if user %}
+        <h2>Welcome, {{ user.name }}!</h2>
+        <img src="{{ user.picture }}" width="80" style="border-radius: 50%;">
+        <p>{{ user.email }}</p>
+        <a href="/logout">Logout</a>
+    {% else %}
+        <a href="/login">Login with Google</a>
+    {% endif %}
+
+    <hr>
+
+    <h1>Speech to Text</h1>
+    <button onclick="startListening()">🎤 Speak</button>
+    <div id="text"></div>
+
+    <script>
+        function startListening() {
+            const output = document.getElementById("text");
+            output.innerHTML = "Listening...";
+
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                output.innerHTML = `<strong>You said:</strong> ${transcript}`;
+            };
+
+            recognition.onerror = (event) => {
+                output.innerHTML = "Error occurred: " + event.error;
+            };
+
+            recognition.onend = () => {
+                console.log("Speech recognition ended.");
+            };
+
+            recognition.start();
+        }
+    </script>
+</body>
 </html>
